@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "E2X63G5JeBolqwI4Y7eYofKeE9YDbnub+dxBG5OMZd4=",
+  "Source": "BankTransactionTracker",
+  "BasePath": "_content/BankTransactionTracker",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
