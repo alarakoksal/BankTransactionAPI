@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Kesin DB yolu (senin Mac path'in)
+
 var dbPath = "/Users/alara/BankTransactionTracker/bank.db";
 
-// ✅ Terminalde yazdırsın ki emin olalım
-Console.WriteLine("✅ SQLite DB Path: " + dbPath);
 
-// DbContext (SQLite)
+Console.WriteLine(" SQLite DB Path: " + dbPath);
+
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 

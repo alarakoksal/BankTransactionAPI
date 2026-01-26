@@ -17,7 +17,7 @@ namespace BankTransactionTracker.Controllers
             _context = context;
         }
 
-        // ✅ Tüm işlemleri listeler
+        // Listeleme
         [HttpGet]
         public async Task<ActionResult<List<Transaction>>> GetAll()
         {
@@ -28,8 +28,7 @@ namespace BankTransactionTracker.Controllers
             return Ok(transactions);
         }
 
-        // ✅ Filtreleme
-        // Örn: /api/Transactions/filter?minAmount=500&startDate=2026-01-01
+        // Filtreleme
         [HttpGet("filter")]
         public async Task<ActionResult<List<Transaction>>> Filter(
             [FromQuery] decimal? minAmount,
@@ -58,7 +57,7 @@ namespace BankTransactionTracker.Controllers
             return Ok(result);
         }
 
-        // ✅ Para transferi
+        // Transfer
         [HttpPost("transfer")]
         public async Task<ActionResult> Transfer([FromBody] TransferRequest request)
         {
@@ -78,11 +77,11 @@ namespace BankTransactionTracker.Controllers
             if (sender.Balance < request.Amount)
                 return BadRequest("Insufficient balance.");
 
-            // ✅ Bakiye güncelle
+            // Güncelleme
             sender.Balance -= request.Amount;
             receiver.Balance += request.Amount;
 
-            // ✅ Transaction kaydı
+            // Kayıt
             var tx = new Transaction
             {
                 SenderAccountId = request.SenderAccountId,

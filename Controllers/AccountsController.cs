@@ -17,7 +17,7 @@ namespace BankTransactionTracker.Controllers
             _context = context;
         }
 
-        // ✅ GET: /api/Accounts
+        //  GET: /api/Accounts
         [HttpGet]
         public async Task<ActionResult<List<AccountResponse>>> GetAll()
         {
@@ -34,7 +34,7 @@ namespace BankTransactionTracker.Controllers
             return Ok(accounts);
         }
 
-        // ✅ POST: /api/Accounts
+        // POST: /api/Accounts
         [HttpPost]
         public async Task<ActionResult<AccountResponse>> Create([FromBody] CreateAccountRequest request)
         {
