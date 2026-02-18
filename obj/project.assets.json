@@ -4876,11 +4876,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/alara/BankTransactionTracker/BankTransactionTracker.csproj",
+      "projectUniqueName": "/Users/alara/Desktop/BankTransactionTracker/BankTransactionTracker.csproj",
       "projectName": "BankTransactionTracker",
-      "projectPath": "/Users/alara/BankTransactionTracker/BankTransactionTracker.csproj",
+      "projectPath": "/Users/alara/Desktop/BankTransactionTracker/BankTransactionTracker.csproj",
       "packagesPath": "/Users/alara/.nuget/packages/",
-      "outputPath": "/Users/alara/BankTransactionTracker/obj/",
+      "outputPath": "/Users/alara/Desktop/BankTransactionTracker/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/alara/.nuget/NuGet/NuGet.Config"

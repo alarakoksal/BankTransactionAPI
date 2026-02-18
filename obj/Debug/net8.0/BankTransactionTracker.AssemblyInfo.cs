@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BankTransactionTracker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a04fd003161aa76daa501cc959280d6aff349fb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4c23ba0862fd53e80fd1b516e7e6eb143425667")]
 [assembly: System.Reflection.AssemblyProductAttribute("BankTransactionTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BankTransactionTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

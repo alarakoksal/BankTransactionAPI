@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MEjKqSSkDh8=",
+  "dgSpecHash": "M3TrKwZ4GiM=",
   "success": true,
-  "projectFilePath": "/Users/alara/BankTransactionTracker/BankTransactionTracker.csproj",
+  "projectFilePath": "/Users/alara/Desktop/BankTransactionTracker/BankTransactionTracker.csproj",
   "expectedPackageFiles": [
     "/Users/alara/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/Users/alara/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
