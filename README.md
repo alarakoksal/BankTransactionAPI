@@ -1,24 +1,24 @@
 # Bank Transaction Tracker API
 
-Hesap yönetimi ve para transferi işlemleri için geliştirilmiş bir bankacılık REST API'si.
+A banking REST API for account management and money transfers.
 
-## Teknolojiler
+## Technologies
 
 - .NET 8 Web API
 - Entity Framework Core
 - SQLite
 - Swagger / OpenAPI
 
-## Özellikler
+## Features
 
-- Hesap oluşturma, listeleme, güncelleme ve silme
-- Hesaplar arası para transferi (atomik — DB transaction ile)
-- İşlem geçmişi listeleme ve filtreleme (tutar, tarih aralığı)
-- Hesaba göre işlem geçmişi
-- Duplicate hesap numarası engeli (DB unique constraint)
-- Negatif bakiye ve yetersiz bakiye koruması
+- Create, list, update, and delete accounts
+- Money transfers between accounts (atomic — DB transaction)
+- Transaction history listing and filtering (by amount, date range)
+- Transaction history per account
+- Duplicate account number prevention (DB unique constraint)
+- Negative balance and insufficient funds protection
 
-## Kurulum
+## Getting Started
 
 ```bash
 git clone https://github.com/alarakoksal/BankTransactionAPI.git
@@ -29,29 +29,29 @@ dotnet run
 
 Swagger UI: `http://localhost:5299/swagger`
 
-## Endpoint'ler
+## Endpoints
 
-### Hesaplar
+### Accounts
 
-| Method | URL | Açıklama |
-|--------|-----|----------|
-| GET | `/api/accounts` | Tüm hesapları listele |
-| GET | `/api/accounts/{id}` | Tek hesap getir |
-| GET | `/api/accounts/{id}/transactions` | Hesabın işlem geçmişi |
-| POST | `/api/accounts` | Yeni hesap oluştur |
-| PUT | `/api/accounts/{id}` | Hesap güncelle |
-| DELETE | `/api/accounts/{id}` | Hesap sil |
+| Method | URL | Description |
+|--------|-----|-------------|
+| GET | `/api/accounts` | List all accounts |
+| GET | `/api/accounts/{id}` | Get account by ID |
+| GET | `/api/accounts/{id}/transactions` | Get transaction history for an account |
+| POST | `/api/accounts` | Create a new account |
+| PUT | `/api/accounts/{id}` | Update an account |
+| DELETE | `/api/accounts/{id}` | Delete an account |
 
-### İşlemler
+### Transactions
 
-| Method | URL | Açıklama |
-|--------|-----|----------|
-| GET | `/api/transactions` | Tüm işlemleri listele |
-| GET | `/api/transactions/{id}` | Tek işlem getir |
-| GET | `/api/transactions/filter` | Filtrele (`minAmount`, `maxAmount`, `startDate`, `endDate`) |
-| POST | `/api/transactions/transfer` | Para transferi yap |
+| Method | URL | Description |
+|--------|-----|-------------|
+| GET | `/api/transactions` | List all transactions |
+| GET | `/api/transactions/{id}` | Get transaction by ID |
+| GET | `/api/transactions/filter` | Filter by `minAmount`, `maxAmount`, `startDate`, `endDate` |
+| POST | `/api/transactions/transfer` | Make a transfer |
 
-### Transfer örneği
+### Transfer Example
 
 ```json
 POST /api/transactions/transfer
