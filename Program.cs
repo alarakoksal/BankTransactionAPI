@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 
-var dbPath = "/Users/alara/BankTransactionTracker/bank.db";
+var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "bank.db");
 
 
 Console.WriteLine(" SQLite DB Path: " + dbPath);
@@ -29,8 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.MapControllers();
 

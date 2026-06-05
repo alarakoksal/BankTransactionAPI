@@ -13,7 +13,7 @@ namespace BankTransactionTracker.DTOs
         [MaxLength(20)]
         public string AccountNumber { get; set; } = string.Empty;
 
-        [Range(0, 1000000000)]
+        [Range(0, 1000000000, ErrorMessage = "Balance cannot be negative.")]
         public decimal Balance { get; set; }
     }
 }

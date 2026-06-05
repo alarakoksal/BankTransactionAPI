@@ -17,20 +17,57 @@ namespace BankTransactionTracker.Controllers
             _context = context;
         }
 
-        // Listeleme
         [HttpGet]
-        public async Task<ActionResult<List<Transaction>>> GetAll()
+        public async Task<ActionResult<List<TransactionResponse>>> GetAll()
         {
             var transactions = await _context.Transactions
                 .OrderByDescending(t => t.Date)
+                .Join(_context.Accounts, t => t.SenderAccountId, a => a.Id, (t, sender) => new { t, sender })
+                .Join(_context.Accounts, ts => ts.t.ReceiverAccountId, a => a.Id, (ts, receiver) => new TransactionResponse
+                {
+                    Id = ts.t.Id,
+                    SenderAccountId = ts.t.SenderAccountId,
+                    SenderName = ts.sender.FullName,
+                    SenderAccountNumber = ts.sender.AccountNumber,
+                    ReceiverAccountId = ts.t.ReceiverAccountId,
+                    ReceiverName = receiver.FullName,
+                    ReceiverAccountNumber = receiver.AccountNumber,
+                    Amount = ts.t.Amount,
+                    Date = ts.t.Date
+                })
                 .ToListAsync();
 
             return Ok(transactions);
         }
 
-        // Filtreleme
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TransactionResponse>> GetById(int id)
+        {
+            var result = await _context.Transactions
+                .Where(t => t.Id == id)
+                .Join(_context.Accounts, t => t.SenderAccountId, a => a.Id, (t, sender) => new { t, sender })
+                .Join(_context.Accounts, ts => ts.t.ReceiverAccountId, a => a.Id, (ts, receiver) => new TransactionResponse
+                {
+                    Id = ts.t.Id,
+                    SenderAccountId = ts.t.SenderAccountId,
+                    SenderName = ts.sender.FullName,
+                    SenderAccountNumber = ts.sender.AccountNumber,
+                    ReceiverAccountId = ts.t.ReceiverAccountId,
+                    ReceiverName = receiver.FullName,
+                    ReceiverAccountNumber = receiver.AccountNumber,
+                    Amount = ts.t.Amount,
+                    Date = ts.t.Date
+                })
+                .FirstOrDefaultAsync();
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
         [HttpGet("filter")]
-        public async Task<ActionResult<List<Transaction>>> Filter(
+        public async Task<ActionResult<List<TransactionResponse>>> Filter(
             [FromQuery] decimal? minAmount,
             [FromQuery] decimal? maxAmount,
             [FromQuery] DateTime? startDate,
@@ -52,16 +89,27 @@ namespace BankTransactionTracker.Controllers
 
             var result = await query
                 .OrderByDescending(t => t.Date)
+                .Join(_context.Accounts, t => t.SenderAccountId, a => a.Id, (t, sender) => new { t, sender })
+                .Join(_context.Accounts, ts => ts.t.ReceiverAccountId, a => a.Id, (ts, receiver) => new TransactionResponse
+                {
+                    Id = ts.t.Id,
+                    SenderAccountId = ts.t.SenderAccountId,
+                    SenderName = ts.sender.FullName,
+                    SenderAccountNumber = ts.sender.AccountNumber,
+                    ReceiverAccountId = ts.t.ReceiverAccountId,
+                    ReceiverName = receiver.FullName,
+                    ReceiverAccountNumber = receiver.AccountNumber,
+                    Amount = ts.t.Amount,
+                    Date = ts.t.Date
+                })
                 .ToListAsync();
 
             return Ok(result);
         }
 
-        // Transfer
         [HttpPost("transfer")]
         public async Task<ActionResult> Transfer([FromBody] TransferRequest request)
         {
-            // DTO validation (ApiController bunu otomatik yapar ama net olsun)
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -77,29 +125,42 @@ namespace BankTransactionTracker.Controllers
             if (sender.Balance < request.Amount)
                 return BadRequest("Insufficient balance.");
 
-            // Güncelleme
-            sender.Balance -= request.Amount;
-            receiver.Balance += request.Amount;
-
-            // Kayıt
-            var tx = new Transaction
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                SenderAccountId = request.SenderAccountId,
-                ReceiverAccountId = request.ReceiverAccountId,
-                Amount = request.Amount,
-                Date = DateTime.UtcNow
-            };
+                sender.Balance -= request.Amount;
+                receiver.Balance += request.Amount;
 
-            _context.Transactions.Add(tx);
-            await _context.SaveChangesAsync();
+                var tx = new Transaction
+                {
+                    SenderAccountId = request.SenderAccountId,
+                    ReceiverAccountId = request.ReceiverAccountId,
+                    Amount = request.Amount,
+                    Date = DateTime.UtcNow
+                };
 
-            return Ok(new
+                _context.Transactions.Add(tx);
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+
+                return Ok(new TransactionResponse
+                {
+                    Id = tx.Id,
+                    SenderAccountId = sender.Id,
+                    SenderName = sender.FullName,
+                    SenderAccountNumber = sender.AccountNumber,
+                    ReceiverAccountId = receiver.Id,
+                    ReceiverName = receiver.FullName,
+                    ReceiverAccountNumber = receiver.AccountNumber,
+                    Amount = tx.Amount,
+                    Date = tx.Date
+                });
+            }
+            catch
             {
-                Message = "Transfer successful.",
-                Transaction = tx,
-                SenderBalance = sender.Balance,
-                ReceiverBalance = receiver.Balance
-            });
+                await dbTransaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }
